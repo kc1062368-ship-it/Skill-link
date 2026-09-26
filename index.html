@@ -26,6 +26,10 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoratio
 .toast{position:fixed;bottom:20px;right:20px;background:#101828;color:#fff;padding:13px 16px;border-radius:10px;z-index:200;box-shadow:0 8px 30px #0004}
 @media(max-width:900px){.nav{display:none}.hero{flex-direction:column;align-items:flex-start}.hero h1{font-size:44px}.heroCard{width:100%}.grid{grid-template-columns:1fr 1fr}.journey{flex-direction:column}.community{grid-template-columns:1fr 1fr}.side{width:215px}.main{margin-left:215px;width:calc(100% - 215px);padding:18px}.metrics{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.hero{padding:55px 20px}.section{padding:55px 20px}.hero h1{font-size:38px}.grid,.dashGrid,.community{grid-template-columns:1fr}.journeyGrid{min-width:0}.side{width:70px}.sideLogo{font-size:0;text-align:center}.sideLogo:after{content:'S';font-size:25px;color:var(--blue)}.userMini .mini{display:none}.side button{font-size:0;text-align:center}.side button::first-letter{font-size:20px}.main{margin-left:70px;width:calc(100% - 70px);padding:13px}.head{align-items:flex-start}.stats{gap:16px;flex-wrap:wrap}}
+.dashWelcome{background:linear-gradient(135deg,#061426 0%,#0b3158 58%,#168cff 140%);color:#fff;border-radius:22px;padding:25px 28px;display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px;box-shadow:0 14px 35px #0b315822}.dashKicker{font-size:11px;letter-spacing:1.4px;font-weight:900;color:#8fd0ff}.dashWelcome h2{margin:7px 0 5px;font-size:27px;letter-spacing:-.6px}.dashWelcome p{margin:0;color:#c9ddf0}.dashBadge{background:#ffffff18;border:1px solid #ffffff30;padding:11px 15px;border-radius:999px;font-weight:800;white-space:nowrap}.metrics{gap:16px}.metric{position:relative;overflow:hidden;min-height:145px;box-shadow:0 7px 20px #10182808}.metric:after{content:'';position:absolute;width:80px;height:80px;border-radius:50%;right:-25px;top:-25px;background:#168cff10}.metricIcon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#eaf4ff;margin-bottom:12px}.metricGreen .metricIcon{background:#e9f9f0}.metricPurple .metricIcon{background:#f3edff}.metricGold .metricIcon{background:#fff6dc}.metric b{font-size:30px;letter-spacing:-.7px}.quickActions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.quickActions button{border:1px solid var(--line);background:#fff;border-radius:15px;padding:15px;text-align:left;display:flex;flex-direction:column;gap:4px;transition:.18s;box-shadow:0 5px 15px #10182806}.quickActions button:hover{transform:translateY(-2px);border-color:#9ccfff}.quickActions span{font-size:22px}.quickActions b{font-size:14px}.quickActions small{color:var(--muted)}.modernCard{box-shadow:0 7px 20px #10182808}.cardTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.cardTitle>div{display:flex;align-items:center;gap:9px}.cardTitle h3{margin:0}.sectionIcon{width:34px;height:34px;border-radius:10px;background:#eaf4ff;display:grid;place-items:center}.linkBtn{border:0;background:none;color:var(--blue);font-weight:800}.miniBadge{background:#eaf4ff;color:#1671c9;border-radius:99px;padding:6px 10px;font-weight:900}.levelInline{display:flex;align-items:center;gap:18px}.levelInline .levelCircle{margin:0;width:78px;height:78px;flex:none;font-size:23px}.levelInfo{flex:1}.levelInfo>b{font-size:20px}.levelInfo p{margin:5px 0 10px}.side{box-shadow:5px 0 24px #10182808}.side button{font-weight:700}.side button.active{box-shadow:inset 3px 0 0 var(--blue)}
+@media(max-width:900px){.quickActions{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.dashWelcome{padding:19px;border-radius:17px}.dashWelcome h2{font-size:21px}.dashBadge{font-size:12px;padding:8px 10px}.quickActions{grid-template-columns:1fr 1fr}.metric{min-height:132px;padding:15px}.metric b{font-size:24px}.levelInline{gap:12px}.levelInline .levelCircle{width:62px;height:62px;font-size:19px}}
+
 </style>
 </head>
 <body>
@@ -108,8 +112,26 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoratio
   <div class="head"><div><span class="eyebrow" id="roleEyebrow">PARTNER PANEL</span><h1 id="welcome">Welcome</h1></div><span id="roleBadge" class="badge">PARTNER</span></div>
 
   <div id="overviewPanel" class="panel">
-    <div class="metrics"><div class="metric"><small>Total Earnings</small><b id="mTotal">₹0</b><small>Ledger total</small></div><div class="metric"><small>Available</small><b id="mAvailable">₹0</b><small>Can withdraw</small></div><div class="metric"><small>Referrals</small><b id="mReferrals">0</b><small>Registered</small></div><div class="metric"><small>Level</small><b id="mLevel">L1</b><small id="mPoints">0 points</small></div></div>
-    <div class="dashGrid"><div class="panelCard"><h3>Continue Learning</h3><div id="myCoursesPreview"></div></div><div class="panelCard"><h3>Level Progress</h3><div class="levelCircle" id="overviewLevel">L1</div><div class="progress"><div id="levelProgress" style="width:0%"></div></div><p class="muted" id="levelText">0 points</p></div></div>
+    <div class="dashWelcome">
+      <div><span class="dashKicker">PARTNER WORKSPACE</span><h2>Grow your skills. Build projects. Earn.</h2><p>Everything you need to manage your SkillLink journey from one place.</p></div>
+      <div class="dashBadge">🤝 <span>Partner</span></div>
+    </div>
+    <div class="metrics">
+      <div class="metric metricBlue"><div class="metricIcon">💰</div><small>Total Earnings</small><b id="mTotal">₹0</b><small>Lifetime ledger</small></div>
+      <div class="metric metricGreen"><div class="metricIcon">💳</div><small>Available</small><b id="mAvailable">₹0</b><small>Ready to withdraw</small></div>
+      <div class="metric metricPurple"><div class="metricIcon">🔗</div><small>Referrals</small><b id="mReferrals">0</b><small>Registered</small></div>
+      <div class="metric metricGold"><div class="metricIcon">🏆</div><small>Current Level</small><b id="mLevel">L1</b><small id="mPoints">0 points</small></div>
+    </div>
+    <div class="quickActions">
+      <button onclick="showPanel('courses')"><span>📚</span><b>Learn</b><small>Explore courses</small></button>
+      <button onclick="showPanel('projects')"><span>💼</span><b>Projects</b><small>Find opportunities</small></button>
+      <button onclick="showPanel('referrals')"><span>🔗</span><b>Refer</b><small>Grow your network</small></button>
+      <button onclick="showPanel('withdraw')"><span>💸</span><b>Withdraw</b><small>Request payout</small></button>
+    </div>
+    <div class="dashGrid">
+      <div class="panelCard modernCard"><div class="cardTitle"><div><span class="sectionIcon">📚</span><h3>Continue Learning</h3></div><button class="linkBtn" onclick="showPanel('courses')">View all →</button></div><div id="myCoursesPreview"></div></div>
+      <div class="panelCard modernCard"><div class="cardTitle"><div><span class="sectionIcon">🏆</span><h3>Level Progress</h3></div><span class="miniBadge" id="overviewLevel">L1</span></div><div class="levelInline"><div class="levelCircle" id="overviewLevelCircle">L1</div><div class="levelInfo"><b id="mLevelText">L1</b><p class="muted" id="levelText">0 points</p><div class="progress"><div id="levelProgress" style="width:0%"></div></div></div></div></div>
+    </div>
   </div>
 
   <div id="profilePanel" class="panel hidden"><div class="panelCard"><h2>My Profile</h2><div class="row"><div><div class="avatar" id="profileAvatar">S</div><h3 id="profileName">-</h3><p id="profileEmail" class="muted">-</p></div><div><span class="badge" id="profileRole">partner</span></div></div><hr><p>SkillLink ID: <b id="profileId">-</b></p><p>Referral Code: <b id="profileReferral">-</b></p><div class="field"><label>Phone</label><input id="profilePhone"></div><button class="btn primary" onclick="saveProfile()">Save Profile</button></div></div>
@@ -143,8 +165,8 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoratio
    CONFIG
    Put ONLY your Supabase URL and
    PUBLISHABLE key here.
-   Never put sb_secret/service_role here.
-============================ */
+   Never put sb_secret/ser
+  ============================ */
 const SUPABASE_URL = "https://bcjdrxduugjaqnbpkyox.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QLySlOER-mooLAhfbMu4bA_t6fTzP-w";
 
@@ -301,7 +323,7 @@ async function loadProgress(){
   const pct=next?Math.min(100,Math.round(Number(data.points||0)/Number(next.points)*100)):100;
   document.getElementById('mLevel').textContent=lvl.name;
   document.getElementById('mPoints').textContent=(data.points||0)+' points';
-  document.getElementById('overviewLevel').textContent=lvl.name;
+  document.getElementById('overviewLevel').textContent=lvl.name; document.getElementById('overviewLevelCircle').textContent=lvl.name; document.getElementById('mLevelText').textContent=lvl.name;
   document.getElementById('levelProgress').style.width=pct+'%';
   document.getElementById('levelProgress2').style.width=pct+'%';
   document.getElementById('levelCircle').textContent=lvl.name;
