@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkillLink — Learn • Build • Earn</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#061426;--blue:#168cff;--light:#f4f7fb;--card:#fff;--text:#101828;--muted:#667085;--line:#e4e9f0}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--light);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.top{height:68px;background:var(--bg);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:20}
+.logo{font-weight:900;font-size:25px}.logo i{font-style:normal;color:#2d9bff}.nav{display:flex;gap:24px}.nav a{color:#d8e6f6;font-size:14px}.actions{display:flex;gap:9px}
+.btn{border:0;border-radius:10px;padding:11px 17px;font-weight:800}.primary{background:var(--blue);color:#fff}.outline{background:transparent;border:1px solid #6e87a2;color:#fff}
+.hero{background:radial-gradient(circle at 80% 20%,#17477d,#061426 58%);color:#fff;min-height:590px;padding:80px 7%;display:flex;align-items:center;gap:55px}.hero>div:first-child{max-width:700px}
+.pill{display:inline-block;background:#10365f;color:#77beff;border-radius:99px;padding:8px 13px;font-weight:800;font-size:13px}.hero h1{font-size:60px;line-height:1.02;letter-spacing:-3px;margin:18px 0}.hero h1 span{color:#168cff}.hero p{color:#c6d4e4;font-size:18px;line-height:1.6}.heroBtns{display:flex;gap:12px;margin:25px 0}.stats{display:flex;gap:35px;margin-top:45px}.stats b{font-size:24px}.stats small{display:block;color:#91a8c0;margin-top:4px}.heroCard{width:340px;background:#0d2440;border:1px solid #2d527a;padding:32px;border-radius:20px;text-align:center}.heroCard .emoji{font-size:55px}
+.section{padding:70px 7%}.eyebrow{color:var(--blue);font-weight:900;font-size:13px}.section h2{font-size:38px;margin:8px 0}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card,.panelCard{background:#fff;border:1px solid var(--line);border-radius:17px;padding:21px}.icon{height:120px;border-radius:13px;background:linear-gradient(135deg,#eaf5ff,#dceaff);display:grid;place-items:center;font-size:42px;margin-bottom:15px}.card h3{margin:8px 0}.card p{color:var(--muted);line-height:1.5}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.price{color:var(--blue);font-weight:900}
+.dark{background:var(--bg);color:#fff}.dark .muted{color:#afbed0}.journey{display:flex;justify-content:space-between;gap:40px}.journeyGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;min-width:390px}.journeyGrid div{background:#102641;border:1px solid #25496f;border-radius:14px;padding:22px}
+.community{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.community div{background:#fff;border:1px solid var(--line);padding:22px;border-radius:15px;font-weight:800}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#000a;z-index:100;display:grid;place-items:center;padding:18px}.modalBox{background:#fff;width:min(440px,100%);padding:30px;border-radius:20px;position:relative}.close{position:absolute;right:15px;top:10px;border:0;background:none;font-size:27px}.field{margin:14px 0}.field label{display:block;font-weight:800;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:10px}.full{width:100%}.msg{margin-top:12px;color:#d92d20;font-weight:700}
+.app{min-height:100vh;display:flex}.side{width:255px;background:#fff;border-right:1px solid var(--line);padding:20px 12px;position:fixed;left:0;top:0;bottom:0;z-index:30}.sideLogo{padding:8px 12px 20px;font-size:24px;font-weight:900}.sideLogo span{color:var(--blue)}.userMini{background:#f3f7fc;padding:13px;border-radius:13px;display:flex;gap:10px;align-items:center;margin-bottom:15px}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-weight:900}.mini small{display:block;color:var(--muted);margin-top:3px}.side button{display:block;width:100%;border:0;background:none;text-align:left;padding:12px 13px;border-radius:10px;color:#344054;margin:2px 0}.side button:hover,.side button.active{background:#eaf4ff;color:var(--blue)}
+.main{margin-left:255px;width:calc(100% - 255px);padding:30px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.head .eyebrow{display:block}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}.metric{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px}.metric small{color:var(--muted)}.metric b{font-size:28px;display:block;margin:8px 0}.dashGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.tableWrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px}.badge{display:inline-block;padding:5px 9px;border-radius:99px;background:#eaf4ff;color:#1671c9;font-size:12px;font-weight:800}
+.levelCircle{width:100px;height:100px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:900;margin:10px auto 20px}.progress{height:9px;background:#e7ecf2;border-radius:20px;overflow:hidden}.progress div{height:100%;background:var(--blue)}
+.toast{position:fixed;bottom:20px;right:20px;background:#101828;color:#fff;padding:13px 16px;border-radius:10px;z-index:200;box-shadow:0 8px 30px #0004}
+@media(max-width:900px){.nav{display:none}.hero{flex-direction:column;align-items:flex-start}.hero h1{font-size:44px}.heroCard{width:100%}.grid{grid-template-columns:1fr 1fr}.journey{flex-direction:column}.community{grid-template-columns:1fr 1fr}.side{width:215px}.main{margin-left:215px;width:calc(100% - 215px);padding:18px}.metrics{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.hero{padding:55px 20px}.section{padding:55px 20px}.hero h1{font-size:38px}.grid,.dashGrid,.community{grid-template-columns:1fr}.journeyGrid{min-width:0}.side{width:70px}.sideLogo{font-size:0;text-align:center}.sideLogo:after{content:'S';font-size:25px;color:var(--blue)}.userMini .mini{display:none}.side button{font-size:0;text-align:center}.side button::first-letter{font-size:20px}.main{margin-left:70px;width:calc(100% - 70px);padding:13px}.head{align-items:flex-start}.stats{gap:16px;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<header class="top" id="publicTop">
+  <div class="logo">Skill<i>Link</i></div>
+  <nav class="nav"><a href="#home">Home</a><a href="#courses">Courses</a><a href="#projects">Projects</a><a href="#community">Community</a></nav>
+  <div class="actions"><button class="btn outline" onclick="openAuth('login')">Login</button><button class="btn primary" onclick="openAuth('signup')">Sign Up</button></div>
+</header>
+
+<main id="publicSite">
+<section class="hero" id="home">
+  <div>
+    <span class="pill">🚀 Learn • Build • Earn</span>
+    <h1>Build Your Skills.<br>Build Your <span>Future.</span></h1>
+    <p>SkillLink connects digital learning, practical projects, skills and opportunities in one platform.</p>
+    <div class="heroBtns"><button class="btn primary" onclick="openAuth('signup')">Get Started →</button><a class="btn outline" href="#courses">Explore Courses</a></div>
+    <div class="stats"><div><b>10K+</b><small>Learners</small></div><div><b>120+</b><small>Courses</small></div><div><b>500+</b><small>Projects</small></div><div><b>8L+</b><small>Earnings</small></div></div>
+  </div>
+  <div class="heroCard"><div class="emoji">🎓</div><h2>Your Skill Journey</h2><p class="muted">Learn skills, complete projects, earn and unlock levels.</p><button class="btn primary" onclick="openAuth('signup')">Create Account</button></div>
+</section>
+
+<section class="section" id="courses">
+  <span class="eyebrow">LEARN</span><h2>Courses</h2><p class="muted">Live catalog from Supabase.</p>
+  <div id="courseGrid" class="grid"></div>
+</section>
+
+<section class="section" id="projects">
+  <span class="eyebrow">BUILD</span><h2>Projects</h2><p class="muted">Projects are loaded from the real database.</p>
+  <div id="projectGridPublic" class="grid"></div>
+</section>
+
+<section class="section dark journey">
+  <div><span class="eyebrow">YOUR JOURNEY</span><h2>Learn → Build → Earn → Grow</h2><p class="muted">One SkillLink ecosystem for learning, projects, referrals and earnings.</p></div>
+  <div class="journeyGrid"><div>📚 <b>Learn</b><small> Build skills</small></div><div>💻 <b>Build</b><small> Real projects</small></div><div>💰 <b>Earn</b><small> Project rewards</small></div><div>🏆 <b>Grow</b><small> Unlock levels</small></div></div>
+</section>
+
+<section class="section" id="community">
+  <span class="eyebrow">COMMUNITY</span><h2>Grow Together</h2>
+  <div class="community"><div>💬 Discussions</div><div>📢 Announcements</div><div>🤝 Partner Network</div><div>🎯 Opportunities</div></div>
+</section>
+</main>
+
+<!-- AUTH -->
+<div id="authModal" class="modal hidden">
+  <div class="modalBox">
+    <button class="close" onclick="closeAuth()">×</button>
+    <div class="logo">Skill<i>Link</i></div>
+    <h2 id="authTitle">Login</h2><p class="muted" id="authSub">Welcome back.</p>
+    <div id="signupFields" class="hidden">
+      <div class="field"><label>Full Name</label><input id="name"></div>
+    </div>
+    <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
+    <button id="authBtn" class="btn primary full" onclick="submitAuth()">Login</button>
+    <p style="text-align:center" id="authSwitch">Don't have an account? <button class="btn" onclick="openAuth('signup')">Sign Up</button></p>
+    <div id="authMsg" class="msg"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="app hidden">
+<aside class="side">
+  <div class="sideLogo">Skill<span>Link</span></div>
+  <div class="userMini"><div class="avatar" id="miniAvatar">S</div><div class="mini"><b id="miniName">User</b><small id="miniRole">Partner</small></div></div>
+  <button data-panel="overview" onclick="showPanel('overview')">🏠 Dashboard</button>
+  <button data-panel="profile" onclick="showPanel('profile')">👤 Profile</button>
+  <button data-panel="courses" onclick="showPanel('courses')">📚 Courses</button>
+  <button data-panel="projects" onclick="showPanel('projects')">💼 Projects</button>
+  <button data-panel="referrals" onclick="showPanel('referrals')">🔗 Referrals</button>
+  <button data-panel="earnings" onclick="showPanel('earnings')">💰 Earnings</button>
+  <button data-panel="withdraw" onclick="showPanel('withdraw')">🏦 Withdraw</button>
+  <button data-panel="level" onclick="showPanel('level')">🏆 Level</button>
+  <button data-panel="notifications" onclick="showPanel('notifications')">🔔 Notifications</button>
+  <button id="staffNav" class="hidden" data-panel="staff" onclick="showPanel('staff')">🛡️ Admin / CEO</button>
+  <button onclick="logout()">🚪 Logout</button>
+</aside>
+
+<section class="main">
+  <div class="head"><div><span class="eyebrow" id="roleEyebrow">PARTNER PANEL</span><h1 id="welcome">Welcome</h1></div><span id="roleBadge" class="badge">PARTNER</span></div>
+
+  <div id="overviewPanel" class="panel">
+    <div class="metrics"><div class="metric"><small>Total Earnings</small><b id="mTotal">₹0</b><small>Ledger total</small></div><div class="metric"><small>Available</small><b id="mAvailable">₹0</b><small>Can withdraw</small></div><div class="metric"><small>Referrals</small><b id="mReferrals">0</b><small>Registered</small></div><div class="metric"><small>Level</small><b id="mLevel">L1</b><small id="mPoints">0 points</small></div></div>
+    <div class="dashGrid"><div class="panelCard"><h3>Continue Learning</h3><div id="myCoursesPreview"></div></div><div class="panelCard"><h3>Level Progress</h3><div class="levelCircle" id="overviewLevel">L1</div><div class="progress"><div id="levelProgress" style="width:0%"></div></div><p class="muted" id="levelText">0 points</p></div></div>
+  </div>
+
+  <div id="profilePanel" class="panel hidden"><div class="panelCard"><h2>My Profile</h2><div class="row"><div><div class="avatar" id="profileAvatar">S</div><h3 id="profileName">-</h3><p id="profileEmail" class="muted">-</p></div><div><span class="badge" id="profileRole">partner</span></div></div><hr><p>SkillLink ID: <b id="profileId">-</b></p><p>Referral Code: <b id="profileReferral">-</b></p><div class="field"><label>Phone</label><input id="profilePhone"></div><button class="btn primary" onclick="saveProfile()">Save Profile</button></div></div>
+
+  <div id="coursesPanel" class="panel hidden"><h2>My Courses</h2><div id="myCourses" class="grid"></div></div>
+
+  <div id="projectsPanel" class="panel hidden"><h2>Available Projects</h2><div id="myProjects" class="grid"></div></div>
+
+  <div id="referralsPanel" class="panel hidden"><div class="panelCard"><h2>Referral System</h2><p class="muted">Share your unique referral code.</p><div class="row" style="background:#f4f8fc;padding:14px;border-radius:10px"><b id="refCode">-</b><button class="btn primary" onclick="copyReferral()">Copy</button></div><br><div class="metrics"><div class="metric"><small>Total</small><b id="refTotal">0</b></div><div class="metric"><small>Valid</small><b id="refValid">0</b></div></div></div></div>
+
+  <div id="earningsPanel" class="panel hidden"><h2>Earnings Ledger</h2><div class="panelCard"><div class="tableWrap"><table class="table"><thead><tr><th>Date</th><th>Description</th><th>Gross</th><th>Partner</th><th>Status</th></tr></thead><tbody id="earningsTable"></tbody></table></div></div></div>
+
+  <div id="withdrawPanel" class="panel hidden"><div class="panelCard"><h2>Withdraw Earnings</h2><p class="muted">Minimum withdrawal: ₹100.</p><div class="field"><label>Amount</label><input id="withdrawAmount" type="number" min="100"></div><div class="field"><label>UPI ID</label><input id="withdrawUpi"></div><button class="btn primary" onclick="requestWithdraw()">Request Withdrawal</button><div id="withdrawMsg" class="msg"></div></div></div>
+
+  <div id="levelPanel" class="panel hidden"><div class="panelCard" style="text-align:center"><h2>My Level</h2><div class="levelCircle" id="levelCircle">L1</div><h3 id="levelName">L1</h3><p class="muted" id="levelRequirement">100 points</p><div class="progress"><div id="levelProgress2" style="width:0%"></div></div><p class="muted" id="levelDetails"></p></div></div>
+
+  <div id="notificationsPanel" class="panel hidden"><h2>Notifications</h2><div id="notifications"></div></div>
+
+  <div id="staffPanel" class="panel hidden">
+    <div class="panelCard"><h2 id="staffTitle">Admin / CEO Panel</h2><p class="muted">Real database management protected by RLS.</p></div><br>
+    <div class="metrics"><div class="metric"><small>Total Users</small><b id="staffUsers">0</b></div><div class="metric"><small>Pending Withdrawals</small><b id="staffWithdrawals">0</b></div><div class="metric"><small>Open Projects</small><b id="staffProjects">0</b></div><div class="metric"><small>Role</small><b id="staffRole">-</b></div></div>
+    <div class="panelCard"><h3>Pending Withdrawals</h3><div class="tableWrap"><table class="table"><thead><tr><th>Partner</th><th>Amount</th><th>UPI</th><th>Status</th><th>Action</th></tr></thead><tbody id="staffWithdrawalTable"></tbody></table></div></div>
+  </div>
+</section>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+/* ============================
+   CONFIG
+   Put ONLY your Supabase URL and
+   PUBLISHABLE key here.
+   Never put sb_secret/service_role here.
+============================ */
+const SUPABASE_URL = "https://bcjdrxduugjaqnbpkyox.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QLySlOER-mooLAhfbMu4bA_t6fTzP-w";
+
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let currentUser = null;
+let profile = null;
+let levels = [];
+
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');
+  clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.add('hidden'),2600);
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});}
+
+function openAuth(mode){
+  document.getElementById('authModal').classList.remove('hidden');
+  const signup=mode==='signup';
+  document.getElementById('authTitle').textContent=signup?'Create SkillLink Account':'Welcome Back';
+  document.getElementById('authSub').textContent=signup?'Create your real account.':'Login to your real SkillLink account.';
+  document.getElementById('signupFields').classList.toggle('hidden',!signup);
+  document.getElementById('authBtn').textContent=signup?'Create Account':'Login';
+  document.getElementById('authSwitch').innerHTML=signup?
+    'Already have an account? <button class="btn" onclick="openAuth(\'login\')">Login</button>':
+    'Don\'t have an account? <button class="btn" onclick="openAuth(\'signup\')">Sign Up</button>';
+  document.getElementById('authMsg').textContent='';
+  document.getElementById('authBtn').dataset.mode=mode;
+}
+function closeAuth(){document.getElementById('authModal').classList.add('hidden');}
+
+async function submitAuth(){
+  const mode=document.getElementById('authBtn').dataset.mode;
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  const msg=document.getElementById('authMsg');
+  msg.textContent='';
+  if(!email||!password){msg.textContent='Email and password are required.';return;}
+  if(mode==='signup'){
+    const name=document.getElementById('name').value.trim();
+    if(!name){msg.textContent='Full name is required.';return;}
+    const {data,error}=await client.auth.signUp({
+      email,password,options:{data:{full_name:name}}
+    });
+    if(error){msg.textContent=error.message;return;}
+    if(data.session){closeAuth();await bootApp();}
+    else msg.textContent='Account created. Check your email if email confirmation is enabled, then login.';
+  }else{
+    const {data,error}=await client.auth.signInWithPassword({email,password});
+    if(error){msg.textContent=error.message;return;}
+    closeAuth();await bootApp();
+  }
+}
+
+async function bootApp(){
+  const {data:{user}}=await client.auth.getUser();
+  if(!user)return;
+  currentUser=user;
+  const {data:p,error}=await client.from('profiles').select('*').eq('id',user.id).single();
+  if(error){toast(error.message);return;}
+  profile=p;
+  document.getElementById('publicTop').classList.add('hidden');
+  document.getElementById('publicSite').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  const initials=(profile.full_name||user.email||'S').trim().slice(0,1).toUpperCase();
+  document.getElementById('miniAvatar').textContent=initials;
+  document.getElementById('miniName').textContent=profile.full_name||user.email;
+  document.getElementById('miniRole').textContent=profile.role.toUpperCase();
+  document.getElementById('welcome').textContent='Welcome, '+(profile.full_name||'User')+' 👋';
+  document.getElementById('roleEyebrow').textContent=profile.role.toUpperCase()+' PANEL';
+  document.getElementById('roleBadge').textContent=profile.role.toUpperCase();
+  document.getElementById('profileAvatar').textContent=initials;
+  document.getElementById('profileName').textContent=profile.full_name||'-';
+  document.getElementById('profileEmail').textContent=user.email||'-';
+  document.getElementById('profileRole').textContent=profile.role;
+  document.getElementById('profileId').textContent=profile.id;
+  document.getElementById('profileReferral').textContent=profile.referral_code||'-';
+  document.getElementById('refCode').textContent=profile.referral_code||'-';
+  document.getElementById('profilePhone').value=profile.phone||'';
+  document.getElementById('staffNav').classList.toggle('hidden',!['ceo','admin'].includes(profile.role));
+  await loadLevels();
+  await refreshDashboard();
+  showPanel('overview');
+}
+
+async function loadLevels(){
+  const {data,error}=await client.from('levels').select('*').order('id');
+  if(!error)levels=data||[];
+}
+
+async function refreshDashboard(){
+  await Promise.all([loadCourses(),loadProjects(),loadEarnings(),loadReferrals(),loadProgress(),loadNotifications()]);
+  if(['ceo','admin'].includes(profile.role))await loadStaff();
+}
+
+async function loadCourses(){
+  const {data,error}=await client.from('courses').select('*').eq('active',true).order('created_at',{ascending:false});
+  if(error)return;
+  document.getElementById('courseGrid').innerHTML=(data||[]).map(c=>`
+    <div class="card"><div class="icon">📚</div><h3>${esc(c.title)}</h3><p>${esc(c.description)}</p><div class="row"><span class="price">${money(c.price)}</span><button class="btn primary" onclick="enroll('${c.id}')">Enroll</button></div></div>`).join('');
+  document.getElementById('myCourses').innerHTML=(data||[]).map(c=>`
+    <div class="card"><h3>${esc(c.title)}</h3><p>${esc(c.description)}</p><button class="btn primary" onclick="enroll('${c.id}')">Enroll / Open</button></div>`).join('');
+  const {data:mine}=await client.from('enrollments').select('*,courses(title)').eq('user_id',currentUser.id).order('enrolled_at',{ascending:false});
+  document.getElementById('myCoursesPreview').innerHTML=(mine||[]).length?
+    mine.slice(0,3).map(e=>`<p><b>${esc(e.courses?.title||'Course')}</b> — ${e.progress}%</p>`).join(''):
+    '<p class="muted">No course enrolled yet.</p>';
+}
+
+async function enroll(courseId){
+  const {error}=await client.from('enrollments').upsert({user_id:currentUser.id,course_id:courseId},{onConflict:'user_id,course_id'});
+  if(error)toast(error.message);else{toast('Course enrolled successfully.');await loadCourses();}
+}
+
+async function loadProjects(){
+  const {data,error}=await client.from('projects').select('*').eq('status','open').order('created_at',{ascending:false});
+  if(error)return;
+  const html=(data||[]).map(p=>`
+    <div class="card"><div class="icon">💼</div><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><div class="row"><span class="price">${money(p.reward)}</span><button class="btn primary" onclick="claimProject('${p.id}')">Claim</button></div></div>`).join('');
+  document.getElementById('projectGridPublic').innerHTML=html||'<p class="muted">No open projects yet.</p>';
+  document.getElementById('myProjects').innerHTML=html||'<p class="muted">No open projects yet.</p>';
+}
+async function claimProject(id){
+  const {error}=await client.from('projects').update({assigned_to:currentUser.id,status:'assigned'}).eq('id',id).eq('status','open');
+  if(error)toast(error.message);else{toast('Project assigned to you.');await loadProjects();}
+}
+
+async function loadEarnings(){
+  const {data,error}=await client.from('earnings_ledger').select('*').eq('partner_id',currentUser.id).order('created_at',{ascending:false});
+  if(error)return;
+  let total=0,available=0;
+  (data||[]).forEach(x=>{total+=Number(x.partner_share||0);if(x.status==='available')available+=Number(x.partner_share||0)});
+  document.getElementById('mTotal').textContent=money(total);
+  document.getElementById('mAvailable').textContent=money(available);
+  document.getElementById('earningsTable').innerHTML=(data||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString()}</td><td>${esc(x.description)}</td><td>${money(x.gross_amount)}</td><td>${money(x.partner_share)}</td><td><span class="badge">${esc(x.status)}</span></td></tr>`).join('')||'<tr><td colspan="5">No earnings yet.</td></tr>';
+}
+
+async function loadReferrals(){
+  const {data,error}=await client.from('referrals').select('*').or(`referrer_id.eq.${currentUser.id},referred_user_id.eq.${currentUser.id}`);
+  if(error)return;
+  const own=(data||[]).filter(x=>x.referrer_id===currentUser.id);
+  document.getElementById('mReferrals').textContent=own.length;
+  document.getElementById('refTotal').textContent=own.length;
+  document.getElementById('refValid').textContent=own.filter(x=>x.status==='valid').length;
+}
+
+async function loadProgress(){
+  let {data}=await client.from('user_progress').select('*').eq('user_id',currentUser.id).maybeSingle();
+  if(!data){
+    const ins=await client.from('user_progress').insert({user_id:currentUser.id,points:0,current_level:1}).select().single();
+    data=ins.data;
+  }
+  const lvl=levels.find(x=>x.id===Number(data?.current_level||1))||levels[0]||{id:1,name:'L1',points:100};
+  const next=levels.find(x=>x.id===lvl.id+1);
+  const pct=next?Math.min(100,Math.round(Number(data.points||0)/Number(next.points)*100)):100;
+  document.getElementById('mLevel').textContent=lvl.name;
+  document.getElementById('mPoints').textContent=(data.points||0)+' points';
+  document.getElementById('overviewLevel').textContent=lvl.name;
+  document.getElementById('levelProgress').style.width=pct+'%';
+  document.getElementById('levelProgress2').style.width=pct+'%';
+  document.getElementById('levelCircle').textContent=lvl.name;
+  document.getElementById('levelName').textContent=lvl.name;
+  document.getElementById('levelRequirement').textContent=(next?next.points:lvl.points)+' points';
+  document.getElementById('levelText').textContent=(data.points||0)+' points • '+(next?next.points+' needed for '+next.name:'Highest level');
+  document.getElementById('levelDetails').textContent=next?`Next level: ${next.name} at ${next.points} points and ${next.referrals} referrals.`:'Highest configured level reached.';
+}
+
+async function loadNotifications(){
+  const {data,error}=await client.from('notifications').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error)return;
+  document.getElementById('notifications').innerHTML=(data||[]).map(n=>`<div class="panelCard" style="margin-bottom:10px"><b>${esc(n.title)}</b><p>${esc(n.message)}</p><small class="muted">${new Date(n.created_at).toLocaleString()}</small></div>`).join('')||'<p class="muted">No notifications.</p>';
+}
+
+async function saveProfile(){
+  const phone=document.getElementById('profilePhone').value.trim();
+  const {error}=await client.from('profiles').update({phone}).eq('id',currentUser.id);
+  if(error)toast(error.message);else{toast('Profile saved.');profile.phone=phone;}
+}
+async function requestWithdraw(){
+  const amount=Number(document.getElementById('withdrawAmount').value);
+  const upi=document.getElementById('withdrawUpi').value.trim();
+  const out=document.getElementById('withdrawMsg');out.textContent='';
+  if(amount<100||!upi){out.textContent='Enter amount of at least ₹100 and a UPI ID.';return;}
+  const {error}=await client.from('withdrawals').insert({partner_id:currentUser.id,amount,upi_id:upi});
+  if(error)out.textContent=error.message;else{out.style.color='#027a48';out.textContent='Withdrawal request submitted for approval.';toast('Withdrawal request submitted.');}
+}
+function copyReferral(){navigator.clipboard.writeText(profile.referral_code||'').then(()=>toast('Referral code copied.'))}
+
+async function loadStaff(){
+  const {count:users}=await client.from('profiles').select('*',{count:'exact',head:true});
+  const {count:wd}=await client.from('withdrawals').select('*',{count:'exact',head:true}).eq('status','pending');
+  const {count:pr}=await client.from('projects').select('*',{count:'exact',head:true}).eq('status','open');
+  document.getElementById('staffUsers').textContent=users||0;
+  document.getElementById('staffWithdrawals').textContent=wd||0;
+  document.getElementById('staffProjects').textContent=pr||0;
+  document.getElementById('staffRole').textContent=profile.role.toUpperCase();
+  document.getElementById('staffTitle').textContent=profile.role==='ceo'?'CEO Control Panel':'Admin Control Panel';
+  const {data,error}=await client.from('withdrawals').select('id,partner_id,amount,upi_id,status,created_at,profiles(full_name)').eq('status','pending').order('created_at',{ascending:false});
+  if(error){document.getElementById('staffWithdrawalTable').innerHTML='<tr><td colspan="5">'+esc(error.message)+'</td></tr>';return;}
+  document.getElementById('staffWithdrawalTable').innerHTML=(data||[]).map(w=>`<tr><td>${esc(w.profiles?.full_name||w.partner_id)}</td><td>${money(w.amount)}</td><td>${esc(w.upi_id)}</td><td>${esc(w.status)}</td><td><button class="btn primary" onclick="approveWithdrawal('${w.id}')">Approve</button></td></tr>`).join('')||'<tr><td colspan="5">No pending withdrawals.</td></tr>';
+}
+async function approveWithdrawal(id){
+  const {error}=await client.from('withdrawals').update({status:'approved',approved_by:currentUser.id,processed_at:new Date().toISOString()}).eq('id',id).eq('status','pending');
+  if(error)toast(error.message);else{toast('Withdrawal approved.');await loadStaff();}
+}
+
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.add('hidden'));
+  document.getElementById(name+'Panel')?.classList.remove('hidden');
+  document.querySelectorAll('.side button[data-panel]').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));
+}
+async function logout(){await client.auth.signOut();currentUser=null;profile=null;document.getElementById('app').classList.add('hidden');document.getElementById('publicTop').classList.remove('hidden');document.getElementById('publicSite').classList.remove('hidden');toast('Logged out.');}
+
+client.auth.onAuthStateChange(async (_event,session)=>{
+  if(session && !currentUser) await bootApp();
+});
+
+(async()=>{
+  const {data:{session}}=await client.auth.getSession();
+  if(session)await bootApp();
+  else{
+    const {data}=await client.from('courses').select('*').eq('active',true).order('created_at',{ascending:false});
+    if(data)document.getElementById('courseGrid').innerHTML=data.map(c=>`<div class="card"><div class="icon">📚</div><h3>${esc(c.title)}</h3><p>${esc(c.description)}</p><div class="row"><span class="price">${money(c.price)}</span><button class="btn primary" onclick="openAuth('signup')">Enroll</button></div></div>`).join('');
+    const {data:projects}=await client.from('projects').select('*').eq('status','open').order('created_at',{ascending:false});
+    if(projects)document.getElementById('projectGridPublic').innerHTML=projects.map(p=>`<div class="card"><div class="icon">💼</div><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><div class="row"><span class="price">${money(p.reward)}</span><button class="btn primary" onclick="openAuth('signup')">Start</button></div></div>`).join('');
+  }
+})();
+</script>
+</body>
+</html>
